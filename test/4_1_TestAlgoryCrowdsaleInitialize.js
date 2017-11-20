@@ -119,11 +119,6 @@ contract('Test Algory Crowdsale Initializing', function(accounts) {
             end).should.be.rejectedWith(EVMThrow)
     });
 
-    it("should be crowdsale", async function () {
-        const isCrowdsale = await crowdsale.isCrowdsale();
-        isCrowdsale.should.be.true;
-    });
-
     it("shouldn't allow refunding", async function () {
         const allowRefund = await crowdsale.allowRefund();
         allowRefund.should.be.false;

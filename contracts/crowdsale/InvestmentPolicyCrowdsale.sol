@@ -43,7 +43,7 @@ contract InvestmentPolicyCrowdsale is Pausable {
      * Invest to tokens, recognize the payer and clear his address.
      */
     function buyWithSignedAddress(uint128 customerId, uint8 v, bytes32 r, bytes32 s) external payable {
-        assert(requiredSignedAddress);
+        require(requiredSignedAddress);
         bytes memory prefix = "\x19Ethereum Signed Message:\n32";
         bytes32 hash = sha3(prefix, sha3(msg.sender));
         assert(ecrecover(hash, v, r, s) == signerAddress);

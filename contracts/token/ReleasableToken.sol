@@ -1,12 +1,12 @@
 pragma solidity ^0.4.15;
 
 import './ERC20.sol';
-import '../ownership/Ownable.sol';
+import '../ownership/Claimable.sol';
 
 /**
  * Define interface for releasing the token transfer after a successful crowdsale.
  */
-contract ReleasableToken is ERC20, Ownable {
+contract ReleasableToken is ERC20, Claimable {
 
     /* The finalizer contract that allows unlift the transfer limits on this token */
     address public releaseAgent;

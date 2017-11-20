@@ -45,7 +45,7 @@ contract AlgoryPricingStrategy is PricingStrategy, Ownable {
         revert();
     }
 
-    function getTranche(uint n) external constant returns (uint amount, uint rate) {
+    function getTranche(uint n) public constant returns (uint amount, uint rate) {
         require(n < trancheCount);
         return (tranches[n].amount, tranches[n].rate);
     }

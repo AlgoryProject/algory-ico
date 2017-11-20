@@ -126,6 +126,7 @@ contract AlgoryCrowdsale is InvestmentPolicyCrowdsale {
 
 
     function prepareCrowdsale() onlyOwner external {
+        require(!isPreallocated);
         assert(isAllTokensApproved());
         preallocateTokens();
         isPreallocated = true;
@@ -138,10 +139,6 @@ contract AlgoryCrowdsale is InvestmentPolicyCrowdsale {
         assert(!requireCustomerId); // Crowdsale needs to track participants for thank you email
         assert(!requiredSignedAddress); // Crowdsale allows only server-side signed participants
         investInternal(msg.sender, 0);
-    }
-
-    function isCrowdsale() external constant returns (bool) {
-        return true;
     }
 
     // ONLY BY OWNER
@@ -192,7 +189,7 @@ contract AlgoryCrowdsale is InvestmentPolicyCrowdsale {
      */
     function finalize() inState(State.Success) onlyOwner whenNotPaused external {
         // Already finalized
-        assert(!finalized);
+        require(!finalized);
         finalizeAgent.finalizeCrowdsale();
         finalized = true;
     }
@@ -214,23 +211,22 @@ contract AlgoryCrowdsale is InvestmentPolicyCrowdsale {
     }
 
     function refund() inState(State.Refunding) external {
-        assert(allowRefund);
+        require(allowRefund);
         uint256 weiValue = investedAmountOf[msg.sender];
-        assert(weiValue != 0);
+        require(weiValue != 0);
         investedAmountOf[msg.sender] = 0;
         weiRefunded = weiRefunded.add(weiValue);
         Refund(msg.sender, weiValue);
-        assert(msg.sender.send(weiValue));
+        msg.sender.transfer(weiValue);
     }
 
     function setPricingStrategy(PricingStrategy _pricingStrategy) onlyOwner public {
         State state = getState();
         if (state == State.PreFunding || state == State.Funding) {
-            assert(paused);
+            require(paused);
         }
         pricingStrategy = _pricingStrategy;
         require(pricingStrategy.isPricingStrategy());
-        //        require(pricingStrategy.isSane(address(this)));
     }
 
     function setMultisigWallet(address wallet) onlyOwner public {
@@ -287,9 +283,6 @@ contract AlgoryCrowdsale is InvestmentPolicyCrowdsale {
     }
 
 
-    /**
-     * Called from invest() to confirm if the current investment does not break our cap rule.
-     */
     function isBreakingCap(uint tokenAmount) private constant returns (bool limitBroken) {
         return tokenAmount > getTokensLeft();
     }
@@ -297,18 +290,19 @@ contract AlgoryCrowdsale is InvestmentPolicyCrowdsale {
 
     function investInternal(address receiver, uint128 customerId) whenNotPaused internal{
         State state = getState();
+        require(state == State.PreFunding || state == State.Funding);
         uint weiAmount = msg.value;
         uint tokenAmount = 0;
 
-        assert(state == State.PreFunding || state == State.Funding);
+
         if (state == State.PreFunding) {
-            assert(earlyParticipantWhitelist[receiver] > 0);
+            require(earlyParticipantWhitelist[receiver] > 0);
             require(weiAmount <= earlyParticipantWhitelist[receiver]);
             assert(!pricingStrategy.isPresaleFull(presaleWeiRaised));
         }
 
         tokenAmount = pricingStrategy.getAmountOfTokens(weiAmount, weiRaised);
-        assert(tokenAmount > 0);
+        require(tokenAmount > 0);
         if (investedAmountOf[receiver] == 0) {
             investorCount++;
         }
@@ -323,11 +317,11 @@ contract AlgoryCrowdsale is InvestmentPolicyCrowdsale {
             earlyParticipantWhitelist[receiver] = earlyParticipantWhitelist[receiver].sub(weiAmount);
         }
 
-        assert(!isBreakingCap(tokenAmount));
+        require(!isBreakingCap(tokenAmount));
 
         assignTokens(receiver, tokenAmount);
 
-        assert(multisigWallet.send(weiAmount));
+        require(multisigWallet.send(weiAmount));
 
         Invested(receiver, weiAmount, tokenAmount, customerId);
     }
@@ -338,14 +332,14 @@ contract AlgoryCrowdsale is InvestmentPolicyCrowdsale {
      * Use approve() given to this crowdsale to distribute the tokens.
      */
     function assignTokens(address receiver, uint tokenAmount) private {
-        assert(token.transferFrom(beneficiary, receiver, tokenAmount));
+        require(token.transferFrom(beneficiary, receiver, tokenAmount));
     }
 
     /**
      * Preallocate tokens for developers, company and bounty
      */
     function preallocateTokens() private {
-//        TODO:
+//        TODO: replace to real address
         uint multiplier = 10 ** 18;
         assignTokens(0x58FC33aC6c7001925B4E9595b13B48bA73690a39, 6450000 * multiplier); // developers
         assignTokens(0x78534714b6b02996990cd567ebebd24e1f3dfe99, 6400000 * multiplier); // company
