@@ -5,6 +5,8 @@ import '../ownership/Claimable.sol';
 
 /**
  * Define interface for releasing the token transfer after a successful crowdsale.
+ *
+ * Contract is based on OpenZeppelin contract licenced under https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/LICENSE
  */
 contract ReleasableToken is ERC20, Claimable {
 

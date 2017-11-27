@@ -9,7 +9,9 @@ import '../math/SafeMath.sol';
 /**
  * @title Algory Crowdsale
  *
- * Licensed under the Apache License, version 2.0: https://github.com/AlgoryProject/algory-ico/blob/master/LICENSE.txt
+ * Contract is based on TokenMarketNet licenced under https://github.com/TokenMarketNet/ico/blob/master/LICENSE.txt
+ *
+ * @license Apache License, version 2.0 https://github.com/AlgoryProject/algory-ico/blob/master/LICENSE
  */
 
 contract AlgoryCrowdsale is InvestmentPolicyCrowdsale {

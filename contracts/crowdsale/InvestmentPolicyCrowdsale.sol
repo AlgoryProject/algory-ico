@@ -4,10 +4,11 @@ import '../lifecycle/Pausable.sol';
 
 
 /**
-   @title Investment Policy Abstract Contract
-
-   This contract is based on the TokenMarketNet contract under licence .
-   Licensed under the Apache License, version 2.0: https://github.com/AlgoryProject/algory-ico/blob/master/LICENSE.txt
+ * @title Investment Policy Abstract Contract
+ *
+ * Contract is based on TokenMarketNet licenced under https://github.com/TokenMarketNet/ico/blob/master/LICENSE.txt
+ *
+ * @license Apache License, version 2.0 https://github.com/AlgoryProject/algory-ico/blob/master/LICENSE
  */
 contract InvestmentPolicyCrowdsale is Pausable {
 

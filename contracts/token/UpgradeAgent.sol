@@ -5,6 +5,9 @@ pragma solidity ^0.4.15;
  *
  * Upgrade agent transfers tokens to a new contract.
  * Upgrade agent itself can be the token contract, or just a middle man contract doing the heavy lifting.
+ *
+ * Contract is based on TokenMarketNet licenced under https://github.com/TokenMarketNet/ico/blob/master/LICENSE.txt
+ *
  */
 contract UpgradeAgent {
 

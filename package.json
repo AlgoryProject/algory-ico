@@ -21,6 +21,7 @@
     "chai-bignumber": "^2.0.0",
     "ethereumjs-testrpc": "^3.0.2",
     "solidity-coverage": "^0.2.7",
-    "truffle": "^3.4.11"
+    "truffle": "^3.4.11",
+    "truffle-flattener": "^1.2.0"
   }
 }
