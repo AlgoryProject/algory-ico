@@ -6,7 +6,7 @@ import './UpgradeableToken.sol';
 /**
  * @title Algory Token
  *
- * @note based on OpenZeppelin
+ * @dev based on OpenZeppelin
  *
  * Apache License, version 2.0 https://github.com/AlgoryProject/algory-ico/blob/master/LICENSE
  */

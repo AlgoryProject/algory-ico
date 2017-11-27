@@ -5,7 +5,7 @@ pragma solidity ^0.4.15;
 /**
  * @title SafeMath
  * @dev Math operations with safety checks that throw on error
- * Contract is based on OpenZeppelin contract licenced under https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/LICENSE
+ * Based on OpenZeppelin
  */
 library SafeMath {
   function mul(uint256 a, uint256 b) internal constant returns (uint256) {
@@ -40,7 +40,7 @@ library SafeMath {
  * @dev Simpler version of ERC20 interface
  * @dev see https://github.com/ethereum/EIPs/issues/179
  *
- * @note based on OpenZeppelin
+ * Based on OpenZeppelin
  */
 contract ERC20Basic {
     uint256 public totalSupply;
@@ -55,7 +55,7 @@ contract ERC20Basic {
  * @title ERC20 interface
  * @dev see https://github.com/ethereum/EIPs/issues/20
  *
- * @note based on OpenZeppelin
+ * Based on OpenZeppelin
  */
 
 contract ERC20 is ERC20Basic {
@@ -74,7 +74,7 @@ contract ERC20 is ERC20Basic {
  * @dev https://github.com/ethereum/EIPs/issues/20
  * @dev Based on code by FirstBlood: https://github.com/Firstbloodio/token/blob/master/smart_contract/FirstBloodToken.sol
  *
- * @note based on OpenZeppelin
+ * Based on OpenZeppelin
  */
 contract StandardToken is ERC20 {
 
@@ -183,7 +183,7 @@ contract StandardToken is ERC20 {
 /**
  * @title Burnable Token
  *
- * @note based on OpenZeppelin
+ * @dev based on OpenZeppelin
  */
 contract BurnableToken is StandardToken {
 
@@ -210,7 +210,7 @@ contract BurnableToken is StandardToken {
  * @title Ownable
  * @dev The Ownable contract has an owner address, and provides basic authorization control
  * functions, this simplifies the implementation of "user permissions".
- * @note based on OpenZeppelin
+ * Based on OpenZeppelin
  */
 contract Ownable {
   address public owner;
@@ -255,7 +255,7 @@ contract Ownable {
  * @title Claimable
  * @dev Extension for the Ownable contract, where the ownership needs to be claimed.
  * This allows the new owner to accept the transfer.
- * @note based on OpenZeppelin
+ * Based on OpenZeppelin
  */
 contract Claimable is Ownable {
     address public pendingOwner;
@@ -509,7 +509,7 @@ contract UpgradeableToken is StandardToken {
 /**
  * @title Algory Token
  *
- * @note based on OpenZeppelin
+ * @dev based on OpenZeppelin
  *
  * Apache License, version 2.0 https://github.com/AlgoryProject/algory-ico/blob/master/LICENSE
  */

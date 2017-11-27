@@ -9,7 +9,7 @@ import '../math/SafeMath.sol';
 /**
  * @title Algory Crowdsale
  *
- * @note based on TokenMarketNet
+ * @dev based on TokenMarketNet
  *
  * Apache License, version 2.0 https://github.com/AlgoryProject/algory-ico/blob/master/LICENSE
  */

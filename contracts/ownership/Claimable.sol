@@ -6,7 +6,7 @@ import './Ownable.sol';
  * @title Claimable
  * @dev Extension for the Ownable contract, where the ownership needs to be claimed.
  * This allows the new owner to accept the transfer.
- * @note based on OpenZeppelin
+ * Based on OpenZeppelin
  */
 contract Claimable is Ownable {
     address public pendingOwner;

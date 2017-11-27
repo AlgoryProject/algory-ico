@@ -5,7 +5,7 @@ pragma solidity ^0.4.15;
 /**
  * @title SafeMath
  * @dev Math operations with safety checks that throw on error
- * Contract is based on OpenZeppelin contract licenced under https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/LICENSE
+ * Based on OpenZeppelin
  */
 library SafeMath {
   function mul(uint256 a, uint256 b) internal constant returns (uint256) {
@@ -39,7 +39,7 @@ library SafeMath {
  * @title Ownable
  * @dev The Ownable contract has an owner address, and provides basic authorization control
  * functions, this simplifies the implementation of "user permissions".
- * @note based on OpenZeppelin
+ * Based on OpenZeppelin
  */
 contract Ownable {
   address public owner;
@@ -106,7 +106,7 @@ contract PricingStrategy {
 /**
  * @title Algory Algory Pricing Strategy
  *
- * @note based on TokenMarketNet
+ * @dev based on TokenMarketNet
  *
  * Apache License, version 2.0 https://github.com/AlgoryProject/algory-ico/blob/master/LICENSE
  */

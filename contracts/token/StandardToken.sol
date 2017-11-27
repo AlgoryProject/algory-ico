@@ -10,7 +10,7 @@ import '../math/SafeMath.sol';
  * @dev https://github.com/ethereum/EIPs/issues/20
  * @dev Based on code by FirstBlood: https://github.com/Firstbloodio/token/blob/master/smart_contract/FirstBloodToken.sol
  *
- * @note based on OpenZeppelin
+ * Based on OpenZeppelin
  */
 contract StandardToken is ERC20 {
 

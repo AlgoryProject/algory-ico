@@ -5,7 +5,7 @@ import './StandardToken.sol';
 /**
  * @title Burnable Token
  *
- * @note based on OpenZeppelin
+ * @dev based on OpenZeppelin
  */
 contract BurnableToken is StandardToken {
 
