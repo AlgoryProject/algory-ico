@@ -40,7 +40,7 @@ library SafeMath {
  * @dev Simpler version of ERC20 interface
  * @dev see https://github.com/ethereum/EIPs/issues/179
  *
- * Contract is based on OpenZeppelin contract licenced under https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/LICENSE
+ * @note based on OpenZeppelin
  */
 contract ERC20Basic {
     uint256 public totalSupply;
@@ -55,7 +55,7 @@ contract ERC20Basic {
  * @title ERC20 interface
  * @dev see https://github.com/ethereum/EIPs/issues/20
  *
- * Contract is based on OpenZeppelin contract licenced under https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/LICENSE
+ * @note based on OpenZeppelin
  */
 
 contract ERC20 is ERC20Basic {
@@ -74,8 +74,7 @@ contract ERC20 is ERC20Basic {
  * @dev https://github.com/ethereum/EIPs/issues/20
  * @dev Based on code by FirstBlood: https://github.com/Firstbloodio/token/blob/master/smart_contract/FirstBloodToken.sol
  *
- *
- * Contract is based on OpenZeppelin contract licenced under https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/LICENSE
+ * @note based on OpenZeppelin
  */
 contract StandardToken is ERC20 {
 
@@ -184,7 +183,7 @@ contract StandardToken is ERC20 {
 /**
  * @title Burnable Token
  *
- * Contract is based on OpenZeppelin contract licenced under https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/LICENSE
+ * @note based on OpenZeppelin
  */
 contract BurnableToken is StandardToken {
 
@@ -211,7 +210,7 @@ contract BurnableToken is StandardToken {
  * @title Ownable
  * @dev The Ownable contract has an owner address, and provides basic authorization control
  * functions, this simplifies the implementation of "user permissions".
- * Contract is based on OpenZeppelin contract licenced under https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/LICENSE
+ * @note based on OpenZeppelin
  */
 contract Ownable {
   address public owner;
@@ -256,7 +255,7 @@ contract Ownable {
  * @title Claimable
  * @dev Extension for the Ownable contract, where the ownership needs to be claimed.
  * This allows the new owner to accept the transfer.
- * Contract is based on OpenZeppelin contract licenced under https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/LICENSE
+ * @note based on OpenZeppelin
  */
 contract Claimable is Ownable {
     address public pendingOwner;
@@ -292,7 +291,6 @@ contract Claimable is Ownable {
 /**
  * Define interface for releasing the token transfer after a successful crowdsale.
  *
- * Contract is based on OpenZeppelin contract licenced under https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/LICENSE
  */
 contract ReleasableToken is ERC20, Claimable {
 
@@ -372,7 +370,6 @@ contract ReleasableToken is ERC20, Claimable {
 
 /**
  * @title Base crowdsale token interface
- *
  */
 contract CrowdsaleToken is BurnableToken, ReleasableToken {
     uint public decimals;
@@ -385,8 +382,6 @@ contract CrowdsaleToken is BurnableToken, ReleasableToken {
  *
  * Upgrade agent transfers tokens to a new contract.
  * Upgrade agent itself can be the token contract, or just a middle man contract doing the heavy lifting.
- *
- * Contract is based on TokenMarketNet licenced under https://github.com/TokenMarketNet/ico/blob/master/LICENSE.txt
  *
  */
 contract UpgradeAgent {
@@ -408,7 +403,6 @@ contract UpgradeAgent {
  *
  * First envisioned by Golem and Lunyr projects.
  *
- * Contract is based on OpenZeppelin contract licenced under https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/LICENSE
  */
 contract UpgradeableToken is StandardToken {
 
@@ -515,9 +509,9 @@ contract UpgradeableToken is StandardToken {
 /**
  * @title Algory Token
  *
- * Contract is based on OpenZeppelin contract licenced under https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/LICENSE
+ * @note based on OpenZeppelin
  *
- * @license Apache License, version 2.0 https://github.com/AlgoryProject/algory-ico/blob/master/LICENSE
+ * Apache License, version 2.0 https://github.com/AlgoryProject/algory-ico/blob/master/LICENSE
  */
 contract AlgoryToken is UpgradeableToken, CrowdsaleToken {
 
