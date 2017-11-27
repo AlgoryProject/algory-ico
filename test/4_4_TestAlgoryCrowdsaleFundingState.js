@@ -203,11 +203,11 @@ contract('Test Algory Crowdsale Funding State', function(accounts) {
         await buyAllTokensInTranche(crowdsale, algory, accounts, 1);
     });
 
-    it("should reached in multisig wallet hard cap = 25 000 ETH after II tranche", async function () {
+    it("should reached in multisig wallet hard cap = 24 000 ETH after II tranche", async function () {
         let multisigBalance = await web3.eth.getBalance(multisigWallet);
         let multisigAddress = await crowdsale.multisigWallet();
         assert.equal(multisigAddress, multisigWallet);
-        multisigBalance.should.be.bignumber.equal(initMultisigBalance.plus(ether(25000)));
+        multisigBalance.should.be.bignumber.equal(initMultisigBalance.plus(ether(24000)));
     });
 
     it("shouldn't buy tokens for II tranche rate after limit exceed", async function () {
@@ -245,11 +245,11 @@ contract('Test Algory Crowdsale Funding State', function(accounts) {
         await buyAllTokensInTranche(crowdsale, algory, accounts, 2);
     });
 
-    it("should reached in multisig wallet hard cap = 50 000 ETH after III tranche", async function () {
+    it("should reached in multisig wallet hard cap = 40 000 ETH after III tranche", async function () {
         let multisigBalance = await web3.eth.getBalance(multisigWallet);
         let multisigAddress = await crowdsale.multisigWallet();
         assert.equal(multisigAddress, multisigWallet);
-        multisigBalance.should.be.bignumber.equal(initMultisigBalance.plus(ether(50000)));
+        multisigBalance.should.be.bignumber.equal(initMultisigBalance.plus(ether(40000)));
     });
 
     it("shouldn't buy tokens for III tranche rate after limit exceed", async function () {
@@ -301,17 +301,17 @@ contract('Test Algory Crowdsale Funding State', function(accounts) {
         state.should.be.bignumber.equal(4);
     });
 
-    it("should reached in multisig wallet hard cap = 100 000 ETH (-10 ETH) after crowdsale", async function () {
+    it("should reached in multisig wallet hard cap = 60 000 ETH (-10 ETH) after crowdsale", async function () {
         let multisigBalance = await web3.eth.getBalance(multisigWallet);
         let multisigAddress = await crowdsale.multisigWallet();
         assert.equal(multisigAddress, multisigWallet);
-        multisigBalance.should.be.bignumber.above(initMultisigBalance.plus(ether(100000).minus(ether(10))));
+        multisigBalance.should.be.bignumber.above(initMultisigBalance.plus(ether(60000).minus(ether(10))));
     });
 
-    it("shouldn't has in multisig wallet more than 100 000 ETH after crowdsale", async function () {
+    it("shouldn't has in multisig wallet more than 60 000 ETH after crowdsale", async function () {
         let multisigBalance = await web3.eth.getBalance(multisigWallet);
         let multisigAddress = await crowdsale.multisigWallet();
         assert.equal(multisigAddress, multisigWallet);
-        multisigBalance.should.be.bignumber.below(initMultisigBalance.plus(ether(100000).plus(1)));
+        multisigBalance.should.be.bignumber.below(initMultisigBalance.plus(ether(60000).plus(1)));
     });
 });

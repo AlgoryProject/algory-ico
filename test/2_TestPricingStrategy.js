@@ -16,8 +16,8 @@ contract('Test Algory Pricing Strategy', function(accounts) {
     const expectedTranches = [
         {amount: 0, rate: 1200},
         {amount: ether(10000), rate: 1100},
-        {amount: ether(25000), rate: 1050},
-        {amount: ether(50000), rate: 1000},
+        {amount: ether(24000), rate: 1050},
+        {amount: ether(40000), rate: 1000},
     ];
 
     let pricingStrategy;
@@ -94,19 +94,19 @@ contract('Test Algory Pricing Strategy', function(accounts) {
         currentRate = await pricingStrategy.getCurrentRate(weiRaised);
         currentRate.should.be.bignumber.equal(expectedTranches[1].rate);
 
-        weiRaised = ether(25000);
+        weiRaised = ether(24000);
         currentRate = await pricingStrategy.getCurrentRate(weiRaised);
         currentRate.should.be.bignumber.equal(expectedTranches[1].rate);
 
-        weiRaised = ether(25001);
+        weiRaised = ether(24001);
         currentRate = await pricingStrategy.getCurrentRate(weiRaised);
         currentRate.should.be.bignumber.equal(expectedTranches[2].rate);
 
-        weiRaised = ether(25001);
+        weiRaised = ether(24001);
         currentRate = await pricingStrategy.getCurrentRate(weiRaised);
         currentRate.should.be.bignumber.equal(expectedTranches[2].rate);
 
-        weiRaised = ether(50001);
+        weiRaised = ether(40001);
         currentRate = await pricingStrategy.getCurrentRate(weiRaised);
         currentRate.should.be.bignumber.equal(expectedTranches[3].rate);
     });
@@ -178,7 +178,7 @@ contract('Test Algory Pricing Strategy', function(accounts) {
 
     });
     it("should get proper amount of tokens in III tranche", async function () {
-        const weiRaised = ether(25001); // III tranche
+        const weiRaised = ether(24001); // III tranche
 
         let valueToBuy = ether(7);
         let expectedAmountOfTokens = valueToBuy.times(expectedTranches[2].rate);
@@ -211,7 +211,7 @@ contract('Test Algory Pricing Strategy', function(accounts) {
         amountOfTokens.should.be.bignumber.equal(expectedAmountOfTokens);
     });
     it("should get proper amount of tokens in IV tranche", async function () {
-        const weiRaised = ether(50001); // IV tranche
+        const weiRaised = ether(40001); // IV tranche
 
         let valueToBuy = ether(7);
         let expectedAmountOfTokens = valueToBuy.times(expectedTranches[3].rate);

@@ -4,6 +4,11 @@ import '../ownership/Ownable.sol';
 import './PricingStrategy.sol';
 import '../math/SafeMath.sol';
 
+/**
+ *  @title Algory Algory Pricing Strategy
+ *
+ *  Licensed under the Apache License, version 2.0: https://github.com/AlgoryProject/algory-ico/blob/master/LICENSE.txt
+ */
 contract AlgoryPricingStrategy is PricingStrategy, Ownable {
 
     using SafeMath for uint;
@@ -31,10 +36,10 @@ contract AlgoryPricingStrategy is PricingStrategy, Ownable {
         tranches[1].amount = 10000 ether;
         tranches[1].rate = 1100;
 
-        tranches[2].amount = 25000 ether;
+        tranches[2].amount = 24000 ether;
         tranches[2].rate = 1050;
 
-        tranches[3].amount = 50000 ether;
+        tranches[3].amount = 40000 ether;
         tranches[3].rate = 1000;
 
         trancheCount = tranches.length;

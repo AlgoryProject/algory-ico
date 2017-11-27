@@ -25,7 +25,7 @@ export default async function buyAllTokensInTranche(crowdsale, algory, accounts,
     let expectedWeiRaised = initWeiRaised.plus(valueToBuy.times(10));
     let expectedTokensSold = initTokensSold.plus(expectedAmountOfTokens.times(10));
     let expectedTokensLeft = initTokensLeft.minus(expectedAmountOfTokens.times(10));
-    let expectedWeiCap = numberOfTranche == tranches.length-1 ? ether(100000).minus(ether(10)): tranches[nextTranche].amount;
+    let expectedWeiCap = numberOfTranche == tranches.length-1 ? ether(60000).minus(ether(10)): tranches[nextTranche].amount;
 
     let investor;
     for (let i=0; i<10; i++) {

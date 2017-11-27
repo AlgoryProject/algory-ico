@@ -9,6 +9,7 @@ import '../math/SafeMath.sol';
  * @dev Implementation of the basic standard token.
  * @dev https://github.com/ethereum/EIPs/issues/20
  * @dev Based on code by FirstBlood: https://github.com/Firstbloodio/token/blob/master/smart_contract/FirstBloodToken.sol
+ *
  */
 contract StandardToken is ERC20 {
 
@@ -83,7 +84,7 @@ contract StandardToken is ERC20 {
      * @param _spender address The address which will spend the funds.
      * @return A uint256 specifying the amount of tokens still available for the spender.
      */
-    function allowance(address _owner, address _spender) public constant returns (uint256 remaining) {
+    function allowance(address _owner, address _spender) public constant returns (uint256) {
         return allowed[_owner][_spender];
     }
 
@@ -93,13 +94,13 @@ contract StandardToken is ERC20 {
      * the first transaction is mined)
      * From MonolithDAO Token.sol
      */
-    function increaseApproval (address _spender, uint _addedValue) public returns (bool success) {
+    function increaseApproval (address _spender, uint _addedValue) public returns (bool) {
         allowed[msg.sender][_spender] = allowed[msg.sender][_spender].add(_addedValue);
         Approval(msg.sender, _spender, allowed[msg.sender][_spender]);
         return true;
     }
 
-    function decreaseApproval (address _spender, uint _subtractedValue) public returns (bool success) {
+    function decreaseApproval (address _spender, uint _subtractedValue) public returns (bool) {
         uint oldValue = allowed[msg.sender][_spender];
         if (_subtractedValue > oldValue) {
             allowed[msg.sender][_spender] = 0;
