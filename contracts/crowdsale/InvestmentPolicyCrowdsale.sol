@@ -2,6 +2,13 @@ pragma solidity ^0.4.15;
 
 import '../lifecycle/Pausable.sol';
 
+
+/**
+   @title Investment Policy Abstract Contract
+
+   This contract is based on the TokenMarketNet contract under licence .
+   Licensed under the Apache License, version 2.0: https://github.com/AlgoryProject/algory-ico/blob/master/LICENSE.txt
+ */
 contract InvestmentPolicyCrowdsale is Pausable {
 
     /* Do we need to have unique contributor id for each customer */
@@ -43,7 +50,7 @@ contract InvestmentPolicyCrowdsale is Pausable {
      * Invest to tokens, recognize the payer and clear his address.
      */
     function buyWithSignedAddress(uint128 customerId, uint8 v, bytes32 r, bytes32 s) external payable {
-        assert(requiredSignedAddress);
+        require(requiredSignedAddress);
         bytes memory prefix = "\x19Ethereum Signed Message:\n32";
         bytes32 hash = sha3(prefix, sha3(msg.sender));
         assert(ecrecover(hash, v, r, s) == signerAddress);
@@ -56,7 +63,7 @@ contract InvestmentPolicyCrowdsale is Pausable {
      *
      */
     function buyWithCustomerId(uint128 customerId) external payable {
-        assert(requireCustomerId);
+        require(requireCustomerId);
         require(customerId != 0);
         investInternal(msg.sender, customerId);
     }

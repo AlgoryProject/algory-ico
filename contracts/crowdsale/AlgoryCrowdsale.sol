@@ -6,6 +6,12 @@ import '../token/CrowdsaleToken.sol';
 import './FinalizeAgent.sol';
 import '../math/SafeMath.sol';
 
+/**
+ * @title Algory Crowdsale
+ *
+ * Licensed under the Apache License, version 2.0: https://github.com/AlgoryProject/algory-ico/blob/master/LICENSE.txt
+ */
+
 contract AlgoryCrowdsale is InvestmentPolicyCrowdsale {
 
     /* Max investment count when we are still allowed to change the multisig address */
@@ -124,9 +130,9 @@ contract AlgoryCrowdsale is InvestmentPolicyCrowdsale {
 
     }
 
-
     function prepareCrowdsale() onlyOwner external {
-        assert(isAllTokensApproved());
+        require(!isPreallocated);
+        require(isAllTokensApproved());
         preallocateTokens();
         isPreallocated = true;
     }
@@ -135,16 +141,10 @@ contract AlgoryCrowdsale is InvestmentPolicyCrowdsale {
      * Allow to send money and get tokens.
      */
     function() payable {
-        assert(!requireCustomerId); // Crowdsale needs to track participants for thank you email
-        assert(!requiredSignedAddress); // Crowdsale allows only server-side signed participants
+        require(!requireCustomerId); // Crowdsale needs to track participants for thank you email
+        require(!requiredSignedAddress); // Crowdsale allows only server-side signed participants
         investInternal(msg.sender, 0);
     }
-
-    function isCrowdsale() external constant returns (bool) {
-        return true;
-    }
-
-    // ONLY BY OWNER
 
     function setFinalizeAgent(FinalizeAgent agent) onlyOwner external{
         finalizeAgent = agent;
@@ -172,9 +172,6 @@ contract AlgoryCrowdsale is InvestmentPolicyCrowdsale {
         TimeBoundaryChanged('endsAt', endsAt);
     }
 
-    /**
-     * Set array of address and values to whitelist
-     */
     function loadEarlyParticipantsWhitelist(address[] participantsArray, uint[] valuesArray) onlyOwner external {
         address participant = 0x0;
         uint value = 0;
@@ -187,65 +184,56 @@ contract AlgoryCrowdsale is InvestmentPolicyCrowdsale {
 
     /**
      * Finalize a successful crowdsale.
-     *
-     * The owner can trigger a call the contract that provides post-crowdsale actions, like releasing the tokens.
      */
     function finalize() inState(State.Success) onlyOwner whenNotPaused external {
-        // Already finalized
-        assert(!finalized);
+        require(!finalized);
         finalizeAgent.finalizeCrowdsale();
         finalized = true;
     }
 
-    /** This is for manual allow refunding */
     function allowRefunding(bool val) onlyOwner external {
         State state = getState();
-        assert(paused || state == State.Success || state == State.Failure || state == State.Refunding);
+        require(paused || state == State.Success || state == State.Failure || state == State.Refunding);
         allowRefund = val;
     }
 
-    /**
-     * Allow load refunds back on the contract for the refunding.
-     * The team can transfer the funds back on the smart contract in the case when is set refunding mode
-     */
     function loadRefund() inState(State.Failure) external payable {
         require(msg.value != 0);
         loadedRefund = loadedRefund.add(msg.value);
     }
 
     function refund() inState(State.Refunding) external {
-        assert(allowRefund);
+        require(allowRefund);
         uint256 weiValue = investedAmountOf[msg.sender];
-        assert(weiValue != 0);
+        require(weiValue != 0);
         investedAmountOf[msg.sender] = 0;
         weiRefunded = weiRefunded.add(weiValue);
         Refund(msg.sender, weiValue);
-        assert(msg.sender.send(weiValue));
+        msg.sender.transfer(weiValue);
     }
 
     function setPricingStrategy(PricingStrategy _pricingStrategy) onlyOwner public {
         State state = getState();
         if (state == State.PreFunding || state == State.Funding) {
-            assert(paused);
+            require(paused);
         }
         pricingStrategy = _pricingStrategy;
         require(pricingStrategy.isPricingStrategy());
-        //        require(pricingStrategy.isSane(address(this)));
     }
 
     function setMultisigWallet(address wallet) onlyOwner public {
         require(wallet != 0x0);
-        assert(investorCount <= MAX_INVESTMENTS_BEFORE_MULTISIG_CHANGE);
+        require(investorCount <= MAX_INVESTMENTS_BEFORE_MULTISIG_CHANGE);
         multisigWallet = wallet;
     }
 
-    /**
-     * Allow addresses to do early participation.
-     */
     function setEarlyParticipantWhitelist(address participant, uint value) onlyOwner public {
         require(value != 0 && participant != 0x0);
         require(value <= pricingStrategy.getPresaleMaxValue());
         assert(!pricingStrategy.isPresaleFull(whitelistWeiRaised));
+        if(earlyParticipantWhitelist[participant] > 0) {
+            whitelistWeiRaised = whitelistWeiRaised.sub(earlyParticipantWhitelist[participant]);
+        }
         earlyParticipantWhitelist[participant] = value;
         whitelistWeiRaised = whitelistWeiRaised.add(value);
         Whitelisted(participant, value);
@@ -255,17 +243,10 @@ contract AlgoryCrowdsale is InvestmentPolicyCrowdsale {
         return token.allowance(beneficiary, this);
     }
 
-    /**
-     * We are sold out when our approve pool becomes empty.
-     */
     function isCrowdsaleFull() public constant returns (bool) {
         return getTokensLeft() == 0;
     }
 
-
-    /**
-     * Crowdfund state machine management.
-     */
     function getState() public constant returns (State) {
         if(finalized) return State.Finalized;
         else if (!isPreallocated) return State.Preparing;
@@ -279,36 +260,33 @@ contract AlgoryCrowdsale is InvestmentPolicyCrowdsale {
         else return State.Failure;
     }
 
-
-    /** Check is crowdsale can be able to transfer all tokens from beneficiary */
+    /**
+     * Check is crowdsale can be able to transfer all tokens from beneficiary
+     */
     function isAllTokensApproved() private constant returns (bool) {
         return getTokensLeft() == token.totalSupply() - tokensSold
                 && token.transferAgents(beneficiary);
     }
 
-
-    /**
-     * Called from invest() to confirm if the current investment does not break our cap rule.
-     */
     function isBreakingCap(uint tokenAmount) private constant returns (bool limitBroken) {
         return tokenAmount > getTokensLeft();
     }
 
-
     function investInternal(address receiver, uint128 customerId) whenNotPaused internal{
         State state = getState();
+        require(state == State.PreFunding || state == State.Funding);
         uint weiAmount = msg.value;
         uint tokenAmount = 0;
 
-        assert(state == State.PreFunding || state == State.Funding);
+
         if (state == State.PreFunding) {
-            assert(earlyParticipantWhitelist[receiver] > 0);
+            require(earlyParticipantWhitelist[receiver] > 0);
             require(weiAmount <= earlyParticipantWhitelist[receiver]);
             assert(!pricingStrategy.isPresaleFull(presaleWeiRaised));
         }
 
         tokenAmount = pricingStrategy.getAmountOfTokens(weiAmount, weiRaised);
-        assert(tokenAmount > 0);
+        require(tokenAmount > 0);
         if (investedAmountOf[receiver] == 0) {
             investorCount++;
         }
@@ -323,32 +301,27 @@ contract AlgoryCrowdsale is InvestmentPolicyCrowdsale {
             earlyParticipantWhitelist[receiver] = earlyParticipantWhitelist[receiver].sub(weiAmount);
         }
 
-        assert(!isBreakingCap(tokenAmount));
+        require(!isBreakingCap(tokenAmount));
 
         assignTokens(receiver, tokenAmount);
 
-        assert(multisigWallet.send(weiAmount));
+        require(multisigWallet.send(weiAmount));
 
         Invested(receiver, weiAmount, tokenAmount, customerId);
     }
 
-    /**
-     * Transfer tokens from approve() pool to the buyer.
-     *
-     * Use approve() given to this crowdsale to distribute the tokens.
-     */
     function assignTokens(address receiver, uint tokenAmount) private {
-        assert(token.transferFrom(beneficiary, receiver, tokenAmount));
+        require(token.transferFrom(beneficiary, receiver, tokenAmount));
     }
 
     /**
      * Preallocate tokens for developers, company and bounty
      */
     function preallocateTokens() private {
-//        TODO:
+//        TODO: replace to real address
         uint multiplier = 10 ** 18;
-        assignTokens(0x58FC33aC6c7001925B4E9595b13B48bA73690a39, 6450000 * multiplier); // developers
-        assignTokens(0x78534714b6b02996990cd567ebebd24e1f3dfe99, 6400000 * multiplier); // company
+        assignTokens(0x58FC33aC6c7001925B4E9595b13B48bA73690a39, 4300000 * multiplier); // developers
+        assignTokens(0x78534714b6b02996990cd567ebebd24e1f3dfe99, 4100000 * multiplier); // company
         assignTokens(0xd64a60de8A023CE8639c66dAe6dd5f536726041E, 2400000 * multiplier); // bounty
     }
 

@@ -164,6 +164,27 @@ contract('Test Algory Crowdsale Preparing State', function(accounts) {
 
     });
 
+    it("should proper increase whitelist", async function () {
+        const participant1 = accounts[17];
+        const value1 = ether(10);
+        const value2 = ether(290);
+
+        let result = await crowdsale.setEarlyParticipantWhitelist(participant1, value1);
+        assert.ok(isEventTriggered(result.logs, 'Whitelisted'));
+        let participant1CurrentValue = await crowdsale.earlyParticipantWhitelist(participant1);
+        participant1CurrentValue.should.be.bignumber.equal(value1);
+        whitelistWeiRaised = whitelistWeiRaised.plus(value1);
+
+        result = await crowdsale.setEarlyParticipantWhitelist(participant1, value2);
+        assert.ok(isEventTriggered(result.logs, 'Whitelisted'));
+        let participant2CurrentValue = await crowdsale.earlyParticipantWhitelist(participant1);
+        participant2CurrentValue.should.be.bignumber.equal(value2);
+        whitelistWeiRaised = whitelistWeiRaised.minus(value1).plus(value2);
+
+        let currentWhitelistedWeiRaised = await crowdsale.whitelistWeiRaised();
+        currentWhitelistedWeiRaised.should.be.bignumber.equal(whitelistWeiRaised);
+    });
+
     it("shouldn't set invalid participant to whitelist ", async function () {
         const invalidParticipant = 0x0;
         await crowdsale.setEarlyParticipantWhitelist(invalidParticipant, ether(20))

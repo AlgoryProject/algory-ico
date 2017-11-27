@@ -4,8 +4,9 @@ import './CrowdsaleToken.sol';
 import './UpgradeableToken.sol';
 
 /**
- * A Algory token.
+ * Algory Token
  *
+ * Licensed under the Apache License, version 2.0: https://github.com/AlgoryProject/algory-ico/blob/master/LICENSE.txt
  */
 contract AlgoryToken is UpgradeableToken, CrowdsaleToken {
 
@@ -13,14 +14,13 @@ contract AlgoryToken is UpgradeableToken, CrowdsaleToken {
     string public symbol = 'ALG';
     uint public decimals = 18;
 
-    uint256 public INITIAL_SUPPLY = 120000000 * (10 ** uint256(decimals));
+    uint256 public INITIAL_SUPPLY = 75000000 * (10 ** uint256(decimals));
 
     event UpdatedTokenInformation(string newName, string newSymbol);
 
     function AlgoryToken() UpgradeableToken(msg.sender) {
         owner = msg.sender;
         totalSupply = INITIAL_SUPPLY;
-        require(totalSupply > 0);
         balances[owner] = totalSupply;
     }
 

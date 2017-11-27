@@ -10,7 +10,7 @@ import isEventTriggered from './helpers/isEventTriggered'
 
 
 contract('Test Algory Token', function(accounts) {
-    const expectedTotalSupply = new BigNumber(120000000 * 10**18);
+    const expectedTotalSupply = new BigNumber(75000000 * 10**18);
     let algory;
 
     beforeEach(async function() {

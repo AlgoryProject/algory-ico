@@ -20,7 +20,7 @@ const EVMThrow = require('./helpers/EVMThrow');
 contract('Test Algory Crowdsale Initializing', function(accounts) {
     let crowdsale, algory, multisigWallet, pricingStrategy, finalizeAgent;
     const beneficiary = accounts[0];
-    const totalSupply = new BigNumber(120000000 * 10**18);
+    const totalSupply = new BigNumber(75000000 * 10**18);
     const presaleStart = latestTime() + duration.minutes(10);
     const start = presaleStart + duration.minutes(10);
     const end = start + duration.hours(1);
@@ -117,11 +117,6 @@ contract('Test Algory Crowdsale Initializing', function(accounts) {
             presaleStart,
             start,
             end).should.be.rejectedWith(EVMThrow)
-    });
-
-    it("should be crowdsale", async function () {
-        const isCrowdsale = await crowdsale.isCrowdsale();
-        isCrowdsale.should.be.true;
     });
 
     it("shouldn't allow refunding", async function () {
