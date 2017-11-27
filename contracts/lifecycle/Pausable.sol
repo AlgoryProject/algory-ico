@@ -6,7 +6,7 @@ import "../ownership/Ownable.sol";
  * @title Pausable
  * @dev Base contract which allows children to implement an emergency stop mechanism.
  *
- * Contract is based on OpenZeppelin contract licenced under https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/LICENSE
+ * @note based on OpenZeppelin
  */
 contract Pausable is Ownable {
     event Pause();

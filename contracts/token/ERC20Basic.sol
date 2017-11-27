@@ -5,7 +5,7 @@ pragma solidity ^0.4.15;
  * @dev Simpler version of ERC20 interface
  * @dev see https://github.com/ethereum/EIPs/issues/179
  *
- * Contract is based on OpenZeppelin contract licenced under https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/LICENSE
+ * @note based on OpenZeppelin
  */
 contract ERC20Basic {
     uint256 public totalSupply;

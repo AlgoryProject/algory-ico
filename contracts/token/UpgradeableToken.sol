@@ -8,7 +8,6 @@ import './UpgradeAgent.sol';
  *
  * First envisioned by Golem and Lunyr projects.
  *
- * Contract is based on OpenZeppelin contract licenced under https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/LICENSE
  */
 contract UpgradeableToken is StandardToken {
 

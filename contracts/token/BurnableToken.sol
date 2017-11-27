@@ -5,7 +5,7 @@ import './StandardToken.sol';
 /**
  * @title Burnable Token
  *
- * Contract is based on OpenZeppelin contract licenced under https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/LICENSE
+ * @note based on OpenZeppelin
  */
 contract BurnableToken is StandardToken {
 

@@ -6,7 +6,7 @@ import './ERC20Basic.sol';
  * @title ERC20 interface
  * @dev see https://github.com/ethereum/EIPs/issues/20
  *
- * Contract is based on OpenZeppelin contract licenced under https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/LICENSE
+ * @note based on OpenZeppelin
  */
 
 contract ERC20 is ERC20Basic {
