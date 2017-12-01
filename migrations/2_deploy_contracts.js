@@ -67,7 +67,7 @@ module.exports = function(deployer, network, accounts) {
     .then(function() {
         console.log("\n\n\t------------------------ DEPLOYED CONTRACTS ------------------------\n\n");
 
-        console.log("\tBeneficiary address: " + beneficiary);
+        console.log("\tBeneficiary address: " + beneficiary.data);
         console.log("\tMultisig Wallet address: " + multiSigWallet.address);
         console.log("\tCrowdsale address: " + crowdsale.address);
         console.log("\tAlgory Token address: " + token.address);

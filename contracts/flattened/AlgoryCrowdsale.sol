@@ -393,6 +393,12 @@ contract FinalizeAgent {
 
 }
 
+// File: contracts/crowdsale/FinalizeCrowdsale.sol
+
+contract FinalizeCrowdsale {
+    FinalizeAgent public finalizeAgent;
+}
+
 // File: contracts/lifecycle/Pausable.sol
 
 /**
@@ -545,7 +551,7 @@ contract PricingStrategy {
  * Apache License, version 2.0 https://github.com/AlgoryProject/algory-ico/blob/master/LICENSE
  */
 
-contract AlgoryCrowdsale is InvestmentPolicyCrowdsale {
+contract AlgoryCrowdsale is InvestmentPolicyCrowdsale, FinalizeCrowdsale {
 
     /* Max investment count when we are still allowed to change the multisig address */
     uint constant public MAX_INVESTMENTS_BEFORE_MULTISIG_CHANGE = 5;
@@ -798,7 +804,7 @@ contract AlgoryCrowdsale is InvestmentPolicyCrowdsale {
      */
     function isAllTokensApproved() private constant returns (bool) {
         return getTokensLeft() == token.totalSupply() - tokensSold
-                && token.transferAgents(beneficiary);
+        && token.transferAgents(beneficiary);
     }
 
     function isBreakingCap(uint tokenAmount) private constant returns (bool limitBroken) {
@@ -851,11 +857,10 @@ contract AlgoryCrowdsale is InvestmentPolicyCrowdsale {
      * Preallocate tokens for developers, company and bounty
      */
     function preallocateTokens() private {
-//        TODO: replace to real address
         uint multiplier = 10 ** 18;
-        assignTokens(0x58FC33aC6c7001925B4E9595b13B48bA73690a39, 4300000 * multiplier); // developers
-        assignTokens(0x78534714b6b02996990cd567ebebd24e1f3dfe99, 4100000 * multiplier); // company
-        assignTokens(0xd64a60de8A023CE8639c66dAe6dd5f536726041E, 2400000 * multiplier); // bounty
+        assignTokens(0xc8337b3e03f5946854e6C5d2F5f3Ad0511Bb2599, 4300000 * multiplier); // developers
+        assignTokens(0x354d755460A677B60A2B5e025A3b7397856b518E, 4100000 * multiplier); // company
+        assignTokens(0x6AC724A02A4f47179A89d4A7532ED7030F55fD34, 2400000 * multiplier); // bounty
     }
 
 }

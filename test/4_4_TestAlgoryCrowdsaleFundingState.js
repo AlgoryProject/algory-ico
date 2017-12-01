@@ -33,7 +33,7 @@ contract('Test Algory Crowdsale Funding State', function(accounts) {
         const startsAt = presaleStartsAt + duration.days(10);
         const endsAt = startsAt + duration.days(10);
 
-        algory = await tokenContract.deployed();
+        algory = await tokenContract.new();
         pricingStrategy = await pricingStrategyContract.deployed();
         crowdsale = await crowdsaleContract.new(
             algory.address,

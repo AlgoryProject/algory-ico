@@ -1,9 +1,9 @@
 pragma solidity ^0.4.15;
 
 import './FinalizeAgent.sol';
-import './AlgoryCrowdsale.sol';
+import './FinalizeCrowdsale.sol';
 import '../math/SafeMath.sol';
-import '../token/AlgoryToken.sol';
+import '../token/ReleasableToken.sol';
 
 /**
  * @title Algory Finalize Agent
@@ -16,10 +16,10 @@ contract AlgoryFinalizeAgent is FinalizeAgent {
 
     using SafeMath for uint;
 
-    AlgoryToken public token;
-    AlgoryCrowdsale public crowdsale;
+    ReleasableToken public token;
+    FinalizeCrowdsale public crowdsale;
 
-    function AlgoryFinalizeAgent(AlgoryToken _token, AlgoryCrowdsale _crowdsale) {
+    function AlgoryFinalizeAgent(ReleasableToken _token, FinalizeCrowdsale _crowdsale) {
         require(address(_token) != 0x0 && address(_crowdsale) != 0x0);
         token = _token;
         crowdsale = _crowdsale;
